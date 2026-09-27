@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <title>GSM Voice Console</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="ambient ambient-one"></div>
+  <div class="ambient ambient-two"></div>
+
+  <main class="shell">
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+        <div>
+          <p class="eyebrow">ELEVENLABS × GSM</p>
+          <h1>GSM Voice Console</h1>
+        </div>
+      </div>
+      <div class="clock" id="clock">--:--:--</div>
+    </header>
+
+    <section class="status-grid" aria-label="System status">
+      <article class="status-card">
+        <div class="status-icon server-icon">A</div>
+        <div><p>Asterisk</p><strong id="asterisk-label">Connecting</strong></div>
+        <span class="status-dot pending" id="asterisk-dot"></span>
+      </article>
+      <article class="status-card">
+        <div class="status-icon gateway-icon">G</div>
+        <div><p>GSM gateway</p><strong id="gateway-label">Checking</strong></div>
+        <span class="status-dot pending" id="gateway-dot"></span>
+      </article>
+      <article class="status-card active-card">
+        <div class="status-icon call-icon">↗</div>
+        <div><p>Active calls</p><strong id="active-count">0</strong></div>
+        <span class="wave"><i></i><i></i><i></i></span>
+      </article>
+    </section>
+
+    <section class="workspace">
+      <article class="panel dialer-panel">
+        <div class="panel-heading">
+          <div>
+            <p class="eyebrow">OUTBOUND</p>
+            <h2>Start a voice call</h2>
+          </div>
+          <span class="route-tag">GSM · SIP</span>
+        </div>
+
+        <form id="call-form">
+          <label for="phone">Mobile number</label>
+          <div class="phone-control">
+            <input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="International or national number" required>
+          </div>
+          <p class="hint">Use your configured country code or national dialling format.</p>
+          <button class="call-button" id="call-button" type="submit">
+            <span class="button-icon">↗</span>
+            <span>Call with AI agent</span>
+          </button>
+          <p class="form-message" id="form-message" role="status"></p>
+        </form>
+
+        <div class="flow">
+          <div><span>01</span><strong>GSM</strong><small>Mobile network</small></div>
+          <b>→</b>
+          <div><span>02</span><strong>Asterisk</strong><small>SIP bridge</small></div>
+          <b>→</b>
+          <div><span>03</span><strong>ElevenLabs</strong><small>Voice agent</small></div>
+        </div>
+      </article>
+
+      <article class="panel history-panel">
+        <div class="panel-heading">
+          <div>
+            <p class="eyebrow">LIVE ACTIVITY</p>
+            <h2>Call status</h2>
+          </div>
+          <button class="icon-button" id="refresh-button" title="Refresh status" type="button">↻</button>
+        </div>
+        <div class="call-list" id="call-list">
+          <div class="empty-state">
+            <div class="empty-orbit"><span>↗</span></div>
+            <h3>No calls yet</h3>
+            <p>Started calls and their live state will appear here.</p>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <footer>
+      <span><i class="secure-dot"></i> Private console over SSH</span>
+      <span id="last-update">not connected</span>
+    </footer>
+  </main>
+
+  <dialog id="auth-dialog">
+    <form method="dialog" id="auth-form">
+      <div class="lock-mark">◇</div>
+      <p class="eyebrow">PRIVATE CONSOLE</p>
+      <h2>Enter dashboard token</h2>
+      <p class="dialog-copy">Get the token from <code>asterisk/secrets.env</code> on your server.</p>
+      <input id="token" type="password" autocomplete="current-password" placeholder="Dashboard token" required>
+      <button class="call-button" type="submit">Unlock console</button>
+      <p class="form-message" id="auth-message" role="alert"></p>
+    </form>
+  </dialog>
+
+  <script src="app.js" defer></script>
+</body>
+</html>

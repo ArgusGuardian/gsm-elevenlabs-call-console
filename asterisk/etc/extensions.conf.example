@@ -1,0 +1,15 @@
+[general]
+static=yes
+writeprotect=yes
+
+[from-gsm]
+exten => s,1,NoOp(GSM inbound CID=${CALLERID(all)})
+ same => n,Dial(PJSIP/EL_SIP_ID_PLACEHOLDER@elevenlabs,120)
+ same => n,Hangup()
+
+exten => _X.,1,Goto(s,1)
+exten => _+X.,1,Goto(s,1)
+exten => EL_SIP_ID_PLACEHOLDER,1,Goto(s,1)
+
+[from-elevenlabs]
+exten => _X.,1,Hangup()

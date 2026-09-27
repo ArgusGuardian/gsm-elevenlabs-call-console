@@ -1,0 +1,10 @@
+.env
+secrets/
+asterisk/secrets.env
+asterisk/etc/pjsip.conf
+asterisk/etc/manager.conf
+asterisk/etc/extensions.conf
+*.cj
+asterisk/log/
+__pycache__/
+*.pyc

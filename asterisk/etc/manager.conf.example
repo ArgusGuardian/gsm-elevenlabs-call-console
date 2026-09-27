@@ -1,0 +1,12 @@
+[general]
+enabled=yes
+webenabled=no
+port=5038
+bindaddr=127.0.0.1
+displayconnects=no
+
+[dashboard]
+secret=CHANGE_ME_AMI_SECRET
+read=system,call,reporting
+write=call,originate
+writetimeout=5000

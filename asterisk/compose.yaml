@@ -1,0 +1,48 @@
+services:
+  asterisk:
+    image: andrius/asterisk:21.12.3_debian-trixie
+    container_name: elevenlabs-asterisk
+    restart: unless-stopped
+    network_mode: host
+    volumes:
+      - ./etc/pjsip.conf:/etc/asterisk/pjsip.conf:ro
+      - ./etc/extensions.conf:/etc/asterisk/extensions.conf:ro
+      - ./etc/rtp.conf:/etc/asterisk/rtp.conf:ro
+      - ./etc/modules.conf:/etc/asterisk/modules.conf:ro
+      - ./etc/logger.conf:/etc/asterisk/logger.conf:ro
+      - ./etc/http.conf:/etc/asterisk/http.conf:ro
+      - ./etc/manager.conf:/etc/asterisk/manager.conf:ro
+      - ./log:/var/log/asterisk
+    logging:
+      driver: json-file
+      options:
+        max-size: "20m"
+        max-file: "5"
+
+  dashboard:
+    build:
+      context: ../dashboard
+    container_name: elevenlabs-dashboard
+    restart: unless-stopped
+    network_mode: host
+    depends_on:
+      asterisk:
+        condition: service_healthy
+    env_file:
+      - ./secrets.env
+    environment:
+      HOST: 127.0.0.1
+      PORT: 8088
+      AMI_HOST: 127.0.0.1
+      AMI_PORT: 5038
+      AMI_USER: dashboard
+    read_only: true
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    logging:
+      driver: json-file
+      options:
+        max-size: "20m"
+        max-file: "5"
